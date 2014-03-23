@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="100dp"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="demo.map.MainActivity$PlaceholderFragment">
+
+    <TextView
+        android:id="@+id/origText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_alignLeft="@+id/origin"
+        android:text="Indulás"/>
+
+    <EditText
+        android:id="@+id/origin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/origText"
+        android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/destText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/origin"
+        android:layout_alignLeft="@+id/origin"
+        android:textSize="20dp"
+        android:text="Érkezés"/>
+
+    <EditText
+        android:id="@+id/destination"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/destText"
+        android:inputType="text"/>
+
+    <Button
+        android:id="@+id/newActivtiyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/destination"
+        android:onClick="newActivity"
+        android:text="Keress!"/>
+
+</RelativeLayout>
