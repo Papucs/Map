@@ -1,6 +1,7 @@
 package demo.map;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import java.util.Locale;
 public class MapActivity extends FragmentActivity {
     GoogleMap map;
     LatLng origin, destination;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -48,7 +50,21 @@ public class MapActivity extends FragmentActivity {
                 .title("Érkezés")
                 .position(destination));
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, 13));
+        TextView tt = (TextView) findViewById(R.id.llText);
+        tt.setText(origin.toString());
+
+        PolylineOptions line = new PolylineOptions()
+                .add(origin)
+                .add(destination)
+                .width(25)
+                .color(Color.BLUE);
+        Polyline polyline = map.addPolyline(line);
+
+        map.moveCamera(CameraUpdateFactory.newLatLng(origin));
+    }
+
+    public int getDirections(){
+       return 1;
     }
 
     public LatLng geoLocate(String location) throws IOException{
