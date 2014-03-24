@@ -26,9 +26,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         o = (EditText) findViewById(R.id.origin);
         d = (EditText) findViewById(R.id.destination);
-        //loc.setOrigin(getCoordinates(orig.getText().toString()));
-        //loc.seLatLng origintDestination(getCoordinates(dest.getText().toString()));
-        //String o = origin.toString();
 
     }
 
