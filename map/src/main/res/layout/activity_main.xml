@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/origText"
+        android:text="boráros tér"
         android:inputType="text"/>
 
     <TextView
@@ -39,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/destText"
+        android:text="déli pályudvar"
         android:inputType="text"/>
 
     <Button

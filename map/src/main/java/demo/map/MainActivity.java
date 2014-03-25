@@ -3,6 +3,7 @@ package demo.map;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,12 +28,13 @@ public class MainActivity extends Activity {
         o = (EditText) findViewById(R.id.origin);
         d = (EditText) findViewById(R.id.destination);
 
+
     }
 
 
     public void newActivity(View v){
-        orig = o.getText().toString();
 
+        orig = o.getText().toString();
         dest = d.getText().toString();
 
         Intent intent = new Intent(getApplicationContext(), MapActivity.class);
