@@ -49,7 +49,7 @@
             android:value="AIzaSyBY3jvadxMgMelfzz5zAzgYCR2Aj_GILmY" />
 
         <activity
-            android:name="demo.map.MapListActivtiy"
+            android:name="demo.map.MapListActivity"
             android:label="@string/title_activity_map_list_activtiy" >
         </activity>
     </application>

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,10 +36,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 
 public class MapActivity extends FragmentActivity {
-    GoogleMap map;
+    private GoogleMap map;
     private List<LatLng> wayPoints = new ArrayList<LatLng>();
     private LatLng origin, destination;
-    String a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +169,12 @@ public class MapActivity extends FragmentActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void newMapListActivity(View v){
+
+        Intent intent = new Intent(getApplicationContext(), MapListActivity.class);
+        startActivity(intent);
     }
 
     private class HttpAsyncTask extends AsyncTask<Void, Void, List<LatLng>> {
