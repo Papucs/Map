@@ -68,7 +68,7 @@ public class MapActivity extends FragmentActivity {
         new HttpAsyncTask().execute();
     }
 
-
+    //útvonal lekérése
     public List<LatLng> getDirections() {
 
         String orig = origin.latitude + "," + origin.longitude;
@@ -103,7 +103,7 @@ public class MapActivity extends FragmentActivity {
         return decodePoly(points);
 
     }
-
+    //a paraméterként kapott cím  földrajzi koordinátáit adja meg
     public LatLng geoLocate(String location) {
         Geocoder gc = new Geocoder(this);
         List<Address> list = null;
@@ -122,6 +122,7 @@ public class MapActivity extends FragmentActivity {
     }
 
     //code source: http://www.geekyblogger.com/2010/12/decoding-polylines-from-google-maps.html
+    //a két végpont közti útvonal pontjait dekódolja a google directions apija áltla visszaadott vonnalláncból
     public static List<LatLng> decodePoly(String encoded) {
         List<LatLng> poly = new ArrayList<LatLng>();
         int index = 0, len = encoded.length();
@@ -177,6 +178,7 @@ public class MapActivity extends FragmentActivity {
         startActivity(intent);
     }
 
+    //a két végpont közti útvonal adatainak lekérését végző asynctask
     private class HttpAsyncTask extends AsyncTask<Void, Void, List<LatLng>> {
         @Override
         protected List<LatLng> doInBackground(Void... params) {
@@ -189,6 +191,7 @@ public class MapActivity extends FragmentActivity {
         protected void onPostExecute(List<LatLng> result) {
             wayPoints.addAll(result);
 
+            //útvonal kirajzolása
             PolylineOptions lineOptions = new PolylineOptions()
                     .color(Color.MAGENTA)
                     .width(5);
