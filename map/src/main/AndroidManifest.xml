@@ -13,9 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-sdk
-        android:maxSdkVersion="17"
-        android:minSdkVersion="11" />
+
 
     <permission
         android:name="demo.map.permission.MAPS_RECIEVE"

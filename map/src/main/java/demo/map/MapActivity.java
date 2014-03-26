@@ -1,46 +1,33 @@
 package demo.map;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.widget.Toast;
-import android.support.v4.app.FragmentActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -49,16 +36,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class MapActivity extends FragmentActivity {
     GoogleMap map;
-    private ArrayList<LatLng> wayPoints;
+    private List<LatLng> wayPoints = new ArrayList<LatLng>();
     private LatLng origin, destination;
+    String a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
 
         map = ((SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map)).getMap();
@@ -67,12 +53,8 @@ public class MapActivity extends FragmentActivity {
         String orig = intent.getExtras().getString("origin");
         String dest = intent.getExtras().getString("destination");
 
-
         origin = geoLocate(orig);
         destination = geoLocate(dest);
-
-        String o = origin.latitude + "," + origin.longitude;
-        String d = destination.latitude + "," + destination.longitude;
 
         map.addMarker(new MarkerOptions()
                 .title("Indulás")
@@ -81,22 +63,13 @@ public class MapActivity extends FragmentActivity {
                 .title("Érkezés")
                 .position(destination));
 
-        PolylineOptions line = new PolylineOptions()
-                /*.add(origin)
-                .add(destination)
-                .color(Color.BLUE)*/;
-
-
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, 10));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, 12));
 
         new HttpAsyncTask().execute();
-
-        Toast.makeText(this, getDirections().get(1).toString(), Toast.LENGTH_LONG).show();
-
     }
 
 
-    public ArrayList<LatLng> getDirections() {
+    public List<LatLng> getDirections() {
 
         String orig = origin.latitude + "," + origin.longitude;
         String dest = destination.latitude + "," + destination.longitude;
@@ -106,28 +79,16 @@ public class MapActivity extends FragmentActivity {
                 "http://maps.google.com/maps/api/directions/xml?origin=" + orig + "&destination=" + dest + "&sensor=false&mode=drive";
 
         try {
-            URL url = new URL(uri);
-
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpResponse httpResponse = null;
-
-            httpResponse = httpClient.execute(new HttpGet(uri));
-
-            InputStream xml = httpResponse.getEntity().getContent();
-
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = null;
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            doc = db.parse(new URL(uri).openStream());
 
-            db = dbf.newDocumentBuilder();
-
-
-            doc = db.parse(xml);
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
             e.printStackTrace();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -139,8 +100,7 @@ public class MapActivity extends FragmentActivity {
 
         String points = pList.item(1).getTextContent();
 
-        wayPoints=decodePoly(points);
-        return wayPoints;
+        return decodePoly(points);
 
     }
 
@@ -162,8 +122,8 @@ public class MapActivity extends FragmentActivity {
     }
 
     //code source: http://www.geekyblogger.com/2010/12/decoding-polylines-from-google-maps.html
-    public static ArrayList<LatLng> decodePoly(String encoded) {
-        ArrayList<LatLng> poly = new ArrayList<LatLng>();
+    public static List<LatLng> decodePoly(String encoded) {
+        List<LatLng> poly = new ArrayList<LatLng>();
         int index = 0, len = encoded.length();
         double lat = 0, lng = 0;
         while (index < len) {
@@ -211,21 +171,26 @@ public class MapActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class HttpAsyncTask extends AsyncTask<Void, Void, ArrayList<LatLng>> {
+    private class HttpAsyncTask extends AsyncTask<Void, Void, List<LatLng>> {
         @Override
-        protected ArrayList<LatLng> doInBackground(Void... params) {
+        protected List<LatLng> doInBackground(Void... params) {
 
             return getDirections();
         }
+
         // onPostExecute displays the results of the AsyncTask.
         @Override
-        protected void onPostExecute(ArrayList<LatLng> result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
+        protected void onPostExecute(List<LatLng> result) {
+            wayPoints.addAll(result);
+
+            PolylineOptions lineOptions = new PolylineOptions()
+                    .color(Color.MAGENTA)
+                    .width(5);
+            Polyline line = map.addPolyline(lineOptions);
+            line.setPoints(wayPoints);
 
         }
-
     }
-
 }
 
 
